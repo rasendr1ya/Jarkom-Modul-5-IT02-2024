@@ -11,7 +11,8 @@
 ### Misi 1: Memetakan Kota New Eridu
 > Soal 1: Sebuah topologi sederhana menggambarkan jaringan New Eridu
 
-![Screenshot 2024-11-30 080625](https://github.com/user-attachments/assets/4e6b742f-fa2d-4503-8afc-96c8fb0d1d1a)
+![Screenshot 2024-11-30 080625](https://github.com/user-attachments/assets/a00a0656-c705-40fe-8bff-e63e448efc42)
+
 
 Keterangan: 
 - HDD: Sebagai DNS Server
@@ -56,7 +57,8 @@ Berikut ini adalah pembagian subnet pada topologi:
 
 > Soal 2: Setelah membagi alamat IP menggunakan VLSM, gambarkan pohon subnet yang menunjukkan hierarki pembagian IP di jaringan New Eridu. Lingkari subnet-subnet yang akan dilewati dalam jaringan.
 
-![modul 5](https://github.com/user-attachments/assets/dcc39cef-9367-4087-8e73-5ed6e072498d)
+![modul 5](https://github.com/user-attachments/assets/894e985a-8cd0-43b5-a4c7-3c720f4c9785)
+
 
 > Soal 3: Setelah pembagian IP selesai, buatlah konfigurasi rute untuk menghubungkan semua subnet dengan benar di jaringan New Eridu. Pastikan perangkat dapat saling terhubung.
 
