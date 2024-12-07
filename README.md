@@ -45,12 +45,12 @@ Berikut ini adalah pembagian subnet pada topologi:
 #### Alokasi IP
 |Subnet|Network ID|Netmask|Broadcast|Range IP|
 |-|-|-|-|-|
-|A1|192.234.1.224|255.255.255.252|192.234.1.227|192.234.1.225 - 192.234.1.226|
-|A2|192.234.1.208|255.255.255.248|192.234.1.215|192.234.1.209 - 192.234.1.214|
-|A3|192.234.1.200|255.255.255.248|192.234.1.207|192.234.1.201 - 192.234.1.206|
+|A1|192.234.1.220|255.255.255.252|192.234.1.223|192.234.1.221 - 192.234.1.222|
+|A2|192.234.1.200|255.255.255.248|192.234.1.207|192.234.1.201 - 192.234.1.206|
+|A3|192.234.1.208|255.255.255.248|192.234.1.215|192.234.1.209 - 192.234.1.214|
 |A4|192.234.1.128|255.255.255.192|192.234.1.191|192.234.1.129 - 192.234.1.190|
-|A5|192.234.1.228|255.255.255.252|192.234.1.231|192.234.1.229 - 192.234.1.230|
-|A6|192.234.1.232|255.255.255.252|192.234.1.235|192.234.1.233 - 192.234.1.234|
+|A5|192.234.1.224|255.255.255.252|192.234.1.227|192.234.1.225 - 192.234.1.226|
+|A6|192.234.1.216|255.255.255.252|192.234.1.219|192.234.1.217 - 192.234.1.218|
 |A7|192.234.0.0|255.255.255.0|192.234.0.255|192.234.0.1 - 192.234.0.254|
 |A8|192.234.1.192|255.255.255.248|192.234.1.199|192.234.1.193 - 192.234.1.198|
 |A9|192.234.1.0|255.255.255.128|192.234.1.127|192.234.1.1 - 192.234.1.126|
@@ -59,27 +59,29 @@ Berikut ini adalah pembagian subnet pada topologi:
 
 ![modul 5](https://github.com/user-attachments/assets/894e985a-8cd0-43b5-a4c7-3c720f4c9785)
 
+#### Tree VLSM
+[gambar tree]
 
 > Soal 3: Setelah pembagian IP selesai, buatlah konfigurasi rute untuk menghubungkan semua subnet dengan benar di jaringan New Eridu. Pastikan perangkat dapat saling terhubung.
 
 #### Konfigurasi Subnet
+Konfigurasi ini dimasukkan ke dalam setiap node
 1. Router: NewEridu 
 ```bash
-# NAT
 auto eth0
 iface eth0 inet dhcp
 
 # A1
 auto eth1
 iface eth1 inet static
-  address 192.234.1.217
-  netmask 255.255.255.252
+	address 192.234.1.221
+	netmask 255.255.255.252
 
 # A6
 auto eth2
 iface eth2 inet static
-  address 192.234.1.221
-  netmask 255.255.255.252
+	address 192.234.1.217
+	netmask 255.255.255.252
 ```
 
 2. Router: SixStreet (A1, A2, A3)
@@ -87,21 +89,21 @@ iface eth2 inet static
 # A1
 auto eth0
 iface eth0 inet static
-  address 192.234.1.218
-  netmask 255.255.255.252
-  gateway 192.234.1.217
+	address 192.234.1.222
+	netmask 255.255.255.252
+	gateway 192.234.1.221
 
 # A2
 auto eth1
 iface eth1 inet static
-  address 192.234.1.201
-  netmask 255.255.255.248
+	address 192.234.1.201
+	netmask 255.255.255.248
 
 # A3
 auto eth2
 iface eth2 inet static
-  address 192.234.1.209
-  netmask 255.255.255.248
+	address 192.234.1.209
+	netmask 255.255.255.248
 ```
 
 3. Router: OuterRing (A3, A4)
@@ -109,15 +111,15 @@ iface eth2 inet static
 # A3
 auto eth0
 iface eth0 inet static
-  address 192.234.1.210
-  netmask 255.255.255.248
-  gateway 192.234.1.209
+	address 192.234.1.210
+	netmask 255.255.255.248
+	gateway 192.234.1.209
 
 # A4
 auto eth1
 iface eth1 inet static
-  address 192.234.1.129
-  netmask 255.255.255.192
+	address 192.234.1.129
+	netmask 255.255.255.192
 ```
 
 4. Router: ScootOutpost (A3, A5)
@@ -125,15 +127,15 @@ iface eth1 inet static
 # A3
 auto eth0
 iface eth0 inet static
-  address 192.234.1.211
-  netmask 255.255.255.248
-  gateway 192.234.1.209
+	address 192.234.1.211
+	netmask 255.255.255.248
+	gateway 192.234.1.209
 
 # A5
 auto eth1
 iface eth1 inet static
-  address 192.234.1.225
-  netmask 255.255.255.252
+	address 192.234.1.225
+	netmask 255.255.255.252
 ```
 
 5. Router: LuminaSquare (A6, A7, A8)
@@ -141,21 +143,21 @@ iface eth1 inet static
 # A6
 auto eth0
 iface eth0 inet static
-  address 192.234.1.222
-  netmask 255.255.255.252
-  gateway 192.234.1.221
+	address 192.234.1.218
+	netmask 255.255.255.252
+	gateway 192.234.1.217
 
 # A7
 auto eth1
 iface eth1 inet static
-  address 192.234.0.1
-  netmask 255.255.255.0
+	address 192.234.0.1
+	netmask 255.255.255.0
 
 # A8
 auto eth2
 iface eth2 inet static
-  address 192.234.1.193
-  netmask 255.255.255.248
+	address 192.234.1.193
+	netmask 255.255.255.248
 ```
 
 6. Router: BalletTwins (A8, A9)
@@ -163,60 +165,88 @@ iface eth2 inet static
 # A8
 auto eth0
 iface eth0 inet static
-  address 192.234.1.194
-  netmask 255.255.255.248
-  gateway 192.234.1.193
+	address 192.234.1.194
+	netmask 255.255.255.248
+  	gateway 192.234.1.193
 
 # A9
 auto eth1
 iface eth1 inet static
-  address 192.234.1.1
-  netmask 255.255.255.128
+  	address 192.234.1.1
+	netmask 255.255.255.128
 ```
 
 7. Webserver: HIA (A7)
 ```bash
+# A8
 auto eth0
 iface eth0 inet static
-  address 192.234.1.195
-  netmask 255.255.255.248
-  gateway 192.234.1.193
+	address 192.234.1.195
+	netmask 255.255.255.248
+  	gateway 192.234.1.193
 ```
 
 8. Webserver: HollowZero (A5)
 ```bash
+# A5
 auto eth0
 iface eth0 inet static
-  address 192.234.1.226
-  netmask 255.255.255.252
-  gateway 192.234.1.225
+	address 192.234.1.226
+	netmask 255.255.255.252
+	gateway 192.234.1.225
 ```
 
 9. DNS Server: HDD (A2)
 ```bash
+# A2
 auto eth0
 iface eth0 inet static
-  address 192.234.1.202
-  netmask 255.255.255.248
-  gateway 192.234.1.201
+	address 192.234.1.203
+	netmask 255.255.255.248
+	gateway 192.234.1.201
 ```
 
 10. DHCP Server: Fairy (A2)
 ```bash
+# A2
 auto eth0
 iface eth0 inet static
-  address 192.234.1.203
-  netmask 255.255.255.248
-  gateway 192.234.1.201
+	address 192.234.1.202
+	netmask 255.255.255.248
+	gateway 192.234.1.201
 ```
 
-11. Clients: Jane (A7)
+11. Clients: Jane (A7/ 200 Host)
 ```bash
 auto eth0
 iface eth0 inet dhcp
 ```
 
-12. Clients: Ellen (A9)
+12. Clients: Ellen (A9/ 100 Host)
+```bash
+auto eth0
+iface eth0 inet dhcp
+```
+
+13. Client: Burnice (5 Host)
+```bash
+auto eth0
+iface eth0 inet dhcp
+```
+
+14. Client: Caesar (50 Host)
+```bash
+auto eth0
+iface eth0 inet dhcp
+```
+
+15. Client: PoliceBoo (30 Host)
+```bash
+auto eth0
+iface eth0 inet dhcp
+```
+
+16. Client: Lycaon (20 Host)
 ```bash
 auto eth0
 iface eth0 inet dhcp
@@ -225,70 +255,271 @@ iface eth0 inet dhcp
 #### Konfigurasi Routing
 1. Router: NewEridu
 ```bash
-# A2
-route add -net 192.234.1.192 netmask 255.255.255.248 gw 192.234.1.217
+auto eth0
+iface eth0 inet dhcp
 
-# A3
-route add -net 192.234.1.200 netmask 255.255.255.248 gw 192.234.1.217
+# A1
+auto eth1
+iface eth1 inet static
+	address 192.234.1.221
+	netmask 255.255.255.252
 
-# A4
-route add -net 192.234.1.220 netmask 255.255.255.252 gw 192.234.1.217
+# A6
+auto eth2
+iface eth2 inet static
+	address 192.234.1.217
+	netmask 255.255.255.252
 
-# A5
-route add -net 192.234.1.128 netmask 255.255.255.192 gw 192.234.1.217
+# menambahkan konfigurasi di bawah ini
+# Kanan
+post-up route add -net 192.234.0.0 netmask 255.255.255.0 gw 192.234.1.218
+post-up route add -net 192.234.1.192 netmask 255.255.255.248 gw 192.234.1.218
+post-up route add -net 192.234.1.0 netmask 255.255.255.128 gw 192.234.1.218
 
-# A7
-route add -net 192.234.0.0 netmask 255.255.255.0 gw 192.234.1.225
-
-# A8
-route add -net 192.234.1.208 netmask 255.255.255.248 gw 192.234.1.225
-
-# A9
-route add -net 192.234.1.0 netmask 255.255.255.128 gw 192.234.1.225
-
-# iptables untuk NAT
-IP_ETH0=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $IP_ETH0
-
-echo 'Routing berhasil diterapkan pada NewEridu'
+# Kiri
+post-up route add -net 192.234.1.200 netmask 255.255.255.248 gw 192.234.1.222
+post-up route add -net 192.234.1.208 netmask 255.255.255.248 gw 192.234.1.222
+post-up route add -net 192.234.1.128 netmask 255.255.255.192 gw 192.234.1.222
+post-up route add -net 192.234.1.224 netmask 255.255.255.252 gw 192.234.1.222
 ```
 
 2. Router: SixStreet
 
-Buka Web Console pada SixStreet, lalu masukkan konfigurasi di bawah ini.
 ```bash
+# A1
+auto eth0
+iface eth0 inet static
+	address 192.234.1.222
+	netmask 255.255.255.252
+	gateway 192.234.1.221
+
+# A2
+auto eth1
+iface eth1 inet static
+	address 192.234.1.201
+	netmask 255.255.255.248
+
+# A3
+auto eth2
+iface eth2 inet static
+	address 192.234.1.209
+	netmask 255.255.255.248
+
+# menambahkan konfigurasi di bawah ini
+post-up route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.234.1.221
+post-up route add -net 192.234.1.128 netmask 255.255.255.192 gw 192.234.1.210
+post-up route add -net 192.234.1.224 netmask 255.255.255.252 gw 192.234.1.211
+```
+
+3. Router: OuterRing
+```bash
+# A3
+auto eth0
+iface eth0 inet static
+	address 192.234.1.210
+	netmask 255.255.255.248
+	gateway 192.234.1.209
+
 # A4
-route add -net 192.234.1.220 netmask 255.255.255.252 gw 192.234.1.205
+auto eth1
+iface eth1 inet static
+	address 192.234.1.129
+	netmask 255.255.255.192
+
+# menambahkan konfigurasi di bawah ini
+post-up route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.234.1.209
+post-up route add -net 192.234.1.224 netmask 255.255.255.252 gw 192.234.1.211
+```
+
+4. Router: ScootOutpost
+```bash
+# A3
+auto eth0
+iface eth0 inet static
+	address 192.234.1.211
+	netmask 255.255.255.248
+	gateway 192.234.1.209
 
 # A5
-route add -net 192.234.1.128 netmask 255.255.255.192 gw 192.234.1.205
+auto eth1
+iface eth1 inet static
+	address 192.234.1.225
+	netmask 255.255.255.252
+
+# menambahkan konfigurasi di bawah ini
+post-up route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.234.1.209
+post-up route add -net 192.234.1.128 netmask 255.255.255.192 gw 192.234.1.210
+```
+
+5. Router: LuminaSquare
+```bash
+# A6
+auto eth0
+iface eth0 inet static
+	address 192.234.1.218
+	netmask 255.255.255.252
+	gateway 192.234.1.217
 
 # A7
-route add -net 192.234.0.0 netmask 255.255.255.0 gw 192.234.1.218
+auto eth1
+iface eth1 inet static
+	address 192.234.0.1
+	netmask 255.255.255.0
 
 # A8
-route add -net 192.234.1.208 netmask 255.255.255.248 gw 192.234.1.218
+auto eth2
+iface eth2 inet static
+	address 192.234.1.193
+	netmask 255.255.255.248
+
+# menambahkan konfigurasi
+post-up route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.234.1.217
+post-up route add -net 192.234.1.0 netmask 255.255.255.128 gw 192.234.1.194
+```
+
+6. Router: BalletTwins
+```bash
+# A8
+auto eth0
+iface eth0 inet static
+	address 192.234.1.194
+	netmask 255.255.255.248
+ 	gateway 192.234.1.193
 
 # A9
-route add -net 192.234.1.0 netmask 255.255.255.128 gw 192.234.1.218
+auto eth1
+iface eth1 inet static
+  	address 192.234.1.1
+	netmask 255.255.255.128
 
-# DHCP relay setup
+# menambahkan konfigurasi
+post-up route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.234.1.192
+```
+
+### Soal 4: Konfigurasi → dikerjakan setelah misi 2 nomor 1
+> - Fairy sebagai DHCP Server agar perangkat yang berada dalam Burnice, Caesar, Ellen, Jane, Lycaon, dan Policeboo dapat menerima alamat IP secara otomatis.
+> - OuterRing, Ballet Twins, Sixstreet dan LuminaSquare Sebagai DHCP Relay
+> - HDD sebagai DNS server
+> - HIA dan HollowZero Sebagai Web server (gunakan apache)
+
+#### DHCP Server (dhcps.sh)
+Install `DHCP Server` lalu masukkan konfigurasi
+```bash
 echo 'nameserver 192.168.122.1' > /etc/resolv.conf
 apt-get update
-apt install isc-dhcp-relay -y
+apt-get install isc-dhcp-server -y
 
-echo 'SERVERS="192.234.1.202"
+echo '
+INTERFACESv4="eth0"
+INTERFACESv6=""
+' > /etc/default/isc-dhcp-server
+
+echo '
+# Jane & Policeboo
+subnet 192.234.0.0 netmask 255.255.255.0 {
+  range 192.234.0.2 192.234.0.254;
+  option routers 192.234.0.1;
+  option broadcast-address 192.234.0.255;
+  option domain-name-servers 192.234.1.203;
+}
+
+# Ellen & Lycaon
+subnet 192.234.1.0 netmask 255.255.255.128 {
+  range 192.234.1.2 192.234.1.126;
+  option routers 192.234.1.1;
+  option broadcast-address 192.234.1.127;
+  option domain-name-servers 192.234.1.203;
+}
+
+# Caesar & Burnice
+subnet 192.234.1.128 netmask 255.255.255.192 {
+  range 192.234.1.130 192.234.1.190;
+  option routers 192.234.1.129;
+  option broadcast-address 192.234.1.191;
+  option domain-name-servers 192.234.1.203;
+}
+
+subnet 192.234.1.200 netmask 255.255.255.248 {
+  range 192.234.1.202 192.234.1.206;
+  option routers 192.234.1.201;
+  option broadcast-address 192.234.1.207;
+  option domain-name-servers 192.234.1.203;
+}
+' > /etc/dhcp/dhcpd.conf
+```
+
+Jika sudah, lakukan restart DHCP Server.
+```bash
+service isc-dhcp-server restart
+```
+
+#### DHCP Relay (dhcpr.sh)
+Install `DHCP Relay` lalu masukkan konfigurasi
+```bash
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+apt-get update
+apt-get install isc-dhcp-relay -y
+
+echo '
+SERVERS="192.234.1.202" #fairy
 INTERFACES="eth0 eth1 eth2 eth3"
 OPTIONS=""
 ' > /etc/default/isc-dhcp-relay
 
-# Enable IP forwarding
-echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
+echo '
+net.ipv4.ip_forward=1
+' > /etc/sysctl.conf
+```
 
-# Restart DHCP relay service
+Lakukan restart DHCP Relay
+```bash
 service isc-dhcp-relay restart
+```
 
-echo 'Routing berhasil diterapkan pada SixStreet'
+#### DNS Server (dnss.sh)
+Install `bind9` terlebih dahulu
+```bash
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+apt-get update
+apt-get install bind9 -y
+
+echo 'options {
+    directory "/var/cache/bind";
+
+    forwarders {
+        192.168.122.1;
+    };
+
+    // dnssec-validation auto;
+
+    allow-query { any; };
+    auth-nxdomain no;
+    listen-on-v6 { any; };
+};' > /etc/bind/named.conf.options
+```
+
+Lakukan restart bind9
+```bash
+service bind9 restart
+```
+
+#### WebServer (webs.sh)
+Lakukan install `apache` dan masukkan konfigurasi
+```bash
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+apt-get update
+apt-get install apache2 -y
+
+echo "Welcome to {hostname}" > /var/www/html/index.html
+```
+
+Restart apache
+```bash
+service apache2 restart
 ```
 
 ### Misi 2: Menemukan Jejak Sang Peretas
+> Soal 1: Agar jaringan di New Eridu bisa terhubung ke luar (internet), kalian perlu mengkonfigurasi routing menggunakan iptables. Namun, kalian tidak diperbolehkan menggunakan MASQUERADE.
+
+
+![Screenshot 2024-12-07 171722](https://github.com/user-attachments/assets/08e9b84a-24bb-46da-a924-f27d2f407e50)
