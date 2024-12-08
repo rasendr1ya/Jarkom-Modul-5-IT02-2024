@@ -60,7 +60,7 @@ Berikut ini adalah pembagian subnet pada topologi:
 ![modul 5](https://github.com/user-attachments/assets/894e985a-8cd0-43b5-a4c7-3c720f4c9785)
 
 #### Tree VLSM
-![tree vlsm it02_REV drawio](https://github.com/user-attachments/assets/413adda0-d21e-4bd4-af4f-af87621b61f7)
+![tree vlsm it02 (1)](https://github.com/user-attachments/assets/56efbbdc-47ed-4f36-99b3-eafe0c9cfef7)
 
 > Soal 3: Setelah pembagian IP selesai, buatlah konfigurasi rute untuk menghubungkan semua subnet dengan benar di jaringan New Eridu. Pastikan perangkat dapat saling terhubung.
 
@@ -482,7 +482,7 @@ service isc-dhcp-relay restart
 ![Screenshot 2024-12-08 202326](https://github.com/user-attachments/assets/a1d38d28-9b65-44d7-a16a-681e03a919ba)
 
 #### DNS Server (dnss.sh)
-Install `bind9` terlebih dahulu
+`HDD` adalah DNS Server. Buka pada web console dan install `bind9` terlebih dahulu
 ```bash
 echo 'nameserver 192.168.122.1' > /etc/resolv.conf
 apt-get update
@@ -552,14 +552,69 @@ iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
 
 Perintah `-j DROP` akan memblokir ping yang masuk ke Fairy. Lalu `-j ACCEPT` adalah perintah untuk mengizinkan Fairy ping ke perangkat lain.
 
+Gambar menunjukkan bahwa perangkat lain tidak bisa melakukan ping ke Fairy.
 ![Screenshot 2024-12-08 204343](https://github.com/user-attachments/assets/53e460fb-3e86-4536-8705-a17ef67ebaad)
+
+> Soal 3: Selain itu, agar kejadian sebelumnya tidak terulang, hanya Fairy yang dapat mengakses HDD. Gunakan nc (netcat) untuk memastikan akses ini. [hapus aturan iptables setelah pengujian selesai agar internet tetap dapat diakses.]
 
 Untuk mengembalikan Fairy ke pengaturan awal, jalankan command berikut
 ```bash
 iptables -D INPUT -p icmp --icmp-type echo-request -j DROP
 iptables -D OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
 ```
+Command ini menghapus aturan yang sebelumnya mungkin memblokir permintaan ping yang masuk (echo request).
+
+Gambar menunjukkan bahwa perangkat lain bisa melakukan ping kembali kepada Fairy.
+
+![Screenshot 2024-12-09 005623](https://github.com/user-attachments/assets/8c9ffbbd-e418-401b-bad5-e959a815d541)
+
+IP Address dari `Fairy` adalah 192.234.1.202.
+
+![Screenshot 2024-12-09 010456](https://github.com/user-attachments/assets/3ddea6d6-6b9f-46ad-aa5e-2f3295b3fe8c)
+
+Agar hanya `Fairy` yang dapat mengakses `HDD`, jalankan command berikut pada web console `HDD`.
+```bash
+iptables -A INPUT -s 192.234.1.202 -j ACCEPT
+iptables -A INPUT -j REJECT
+```
+Command ini akan hanya menerima IP Address dari `Fairy` dan memblokir IP Address selain itu.
+
+Untuk pengujian, caranya adalah melakukan ping ke IP Address `HDD`, yaitu 192.234.1.203.
+
+![Screenshot 2024-12-09 010827](https://github.com/user-attachments/assets/3b58c539-6525-4172-8a57-a8abf07c5fdc)
+
+`Fairy` dapat melakukan ping ke `HDD`
+
+![Screenshot 2024-12-09 011028](https://github.com/user-attachments/assets/2c902edd-90a6-435d-a3df-da8f40876106)
+
+Sedangkan `HollowZero` tidak bisa melakukan ping ke `HDD`
+
+![Screenshot 2024-12-09 011149](https://github.com/user-attachments/assets/635cb692-7ae8-4323-a4a5-f93ecbb7761f)
+
+> Soal 4: Fairy mendeteksi aktivitas mencurigakan di server Hollow. Namun, berdasarkan peraturan polisi New Eridu, Hollow hanya boleh diakses pada hari Senin hingga Jumat dan hanya oleh faksi SoC (Burnice & Caesar) dan PubSec (Jane & Policeboo). Karena hari ini hari Sabtu, mereka harus menunggu hingga hari Senin. Gunakan curl untuk memastikan akses ini.
+
+> Soal 5: Sembari menunggu, Fairy menyarankan Phaethon untuk berlatih di server HIA dan meminta bantuan dari faksi Victoria (Ellen & Lycaon) dan PubSec. Akses HIA hanya diperbolehkan untuk
+>
+> a. Ellen dan Lycaon pada jam 08.00-21.00.
+> 
+> b. Jane dan Policeboo pada jam 03.00-23.00. (hak kepolisian)
+> 
+> Gunakan Curl untuk memastikan akses ini.
+
+> Soal 6: Sebagai bagian dari pelatihan, PubSec diminta memperketat keamanan jaringan di server HIA. Jane dan Policeboo melakukan simulasi port scan menggunakan nmap pada rentang port 1-100.
+>
+> a. Web server harus memblokir aktivitas scan port yang melebihi 25 port secara otomatis dalam rentang waktu 10 detik.
+>
+> b. Penyerang yang terblokir tidak dapat melakukan ping, nc, atau curl ke HIA.
+>
+> c. Catat log dari iptables untuk keperluan analisis dan dokumentasikan dalam format PDF.
+
+> Soal 7: Hari Senin tiba, dan Fairy menyarankan membatasi akses ke server Hollow. Akses ke Hollow hanya boleh berasal dari 2 koneksi aktif dari 2 IP yang berbeda dalam waktu bersamaan.Burnice, Caesar, Jane, dan Policeboo diminta melakukan uji coba menggunakan curl.
+
+> Soal 8: Selama uji coba, Fairy mendeteksi aktivitas mencurigakan dari Burnice. Setiap paket yang dikirim Fairy ke Burnice ternyata dialihkan ke HollowZero. Gunakan nc untuk memastikan alur pengalihan ini.
 
 ***
 
 ![Screenshot 2024-12-07 171722](https://github.com/user-attachments/assets/08e9b84a-24bb-46da-a924-f27d2f407e50)
+
+![Screenshot 2024-11-12 231204](https://github.com/user-attachments/assets/f89221c5-cc69-4306-bf3a-cb72460e3a77)
