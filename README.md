@@ -403,7 +403,7 @@ post-up route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.234.1.192
 > - HIA dan HollowZero Sebagai Web server (gunakan apache)
 
 #### DHCP Server (dhcps.sh)
-Install `DHCP Server` lalu masukkan konfigurasi
+Masuk ke terminal Fairy (DHCP Server) untuk install `DHCP Server` lalu masukkan konfigurasi
 ```bash
 echo 'nameserver 192.168.122.1' > /etc/resolv.conf
 apt-get update
@@ -453,8 +453,11 @@ Jika sudah, lakukan restart DHCP Server.
 service isc-dhcp-server restart
 ```
 
+![Screenshot 2024-12-08 202352](https://github.com/user-attachments/assets/ac7d729a-3f2f-4ffb-a9c6-b1fc3bff3f8a)
+
+
 #### DHCP Relay (dhcpr.sh)
-Install `DHCP Relay` lalu masukkan konfigurasi
+Masuk ke node `SixStreet` untuk install `DHCP Relay` lalu masukkan konfigurasi
 ```bash
 echo 'nameserver 192.168.122.1' > /etc/resolv.conf
 apt-get update
@@ -475,6 +478,8 @@ Lakukan restart DHCP Relay
 ```bash
 service isc-dhcp-relay restart
 ```
+
+![Screenshot 2024-12-08 202326](https://github.com/user-attachments/assets/a1d38d28-9b65-44d7-a16a-681e03a919ba)
 
 #### DNS Server (dnss.sh)
 Install `bind9` terlebih dahulu
@@ -503,8 +508,10 @@ Lakukan restart bind9
 service bind9 restart
 ```
 
+![Screenshot 2024-12-08 202625](https://github.com/user-attachments/assets/71267e16-5f54-4a07-989b-01bcb6ab3675)
+
 #### WebServer (webs.sh)
-Lakukan install `apache` dan masukkan konfigurasi
+Buka console WebServer `HIA` dan `HollowZero` untuk install `apache` dan masukkan konfigurasi
 ```bash
 echo 'nameserver 192.168.122.1' > /etc/resolv.conf
 apt-get update
@@ -518,8 +525,41 @@ Restart apache
 service apache2 restart
 ```
 
+HIA
+
+![Screenshot 2024-12-08 203005](https://github.com/user-attachments/assets/e95d510a-0203-4d64-975e-abfb7f4218ab)
+
+HollowZero
+
+![Screenshot 2024-12-08 203146](https://github.com/user-attachments/assets/3f363076-c9fd-4c9f-afc7-47bec16c1389)
+
 ### Misi 2: Menemukan Jejak Sang Peretas
 > Soal 1: Agar jaringan di New Eridu bisa terhubung ke luar (internet), kalian perlu mengkonfigurasi routing menggunakan iptables. Namun, kalian tidak diperbolehkan menggunakan MASQUERADE.
 
+Membuka terminal web console NewEridu dan 
+```bash
+ETH0_IP=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $ETH0_IP
+```
 
 ![Screenshot 2024-12-07 171722](https://github.com/user-attachments/assets/08e9b84a-24bb-46da-a924-f27d2f407e50)
+
+> Soal 2: Karena Fairy adalah Al yang sangat berharga, kalian perlu memastikan bahwa tidak ada perangkat lain yang bisa melakukan ping ke Fairy. Tapi Fairy tetap dapat mengakses seluruh perangkat.
+
+Masuk ke console Fairy dan jalankan command berikut
+```bash
+iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
+iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+```
+
+Perintah `-j DROP` akan memblokir ping yang masuk ke Fairy. Lalu `-j ACCEPT` adalah perintah untuk mengizinkan Fairy ping ke perangkat lain.
+
+![Screenshot 2024-12-08 204343](https://github.com/user-attachments/assets/53e460fb-3e86-4536-8705-a17ef67ebaad)
+
+Untuk mengembalikan Fairy ke pengaturan awal, jalankan command berikut
+```bash
+iptables -D INPUT -p icmp --icmp-type echo-request -j DROP
+iptables -D OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+```
+
+***
