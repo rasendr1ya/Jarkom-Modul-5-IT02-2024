@@ -60,7 +60,7 @@ Berikut ini adalah pembagian subnet pada topologi:
 ![modul 5](https://github.com/user-attachments/assets/894e985a-8cd0-43b5-a4c7-3c720f4c9785)
 
 #### Tree VLSM
-![Uploading tree vlsm it02_REV.drawio.png…]()
+![tree vlsm it02_REV drawio](https://github.com/user-attachments/assets/413adda0-d21e-4bd4-af4f-af87621b61f7)
 
 > Soal 3: Setelah pembagian IP selesai, buatlah konfigurasi rute untuk menghubungkan semua subnet dengan benar di jaringan New Eridu. Pastikan perangkat dapat saling terhubung.
 
