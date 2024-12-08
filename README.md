@@ -536,13 +536,11 @@ HollowZero
 ### Misi 2: Menemukan Jejak Sang Peretas
 > Soal 1: Agar jaringan di New Eridu bisa terhubung ke luar (internet), kalian perlu mengkonfigurasi routing menggunakan iptables. Namun, kalian tidak diperbolehkan menggunakan MASQUERADE.
 
-Membuka terminal web console NewEridu dan 
+Membuka terminal web console NewEridu dan memasukkan konfigurasi berikut.
 ```bash
 ETH0_IP=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $ETH0_IP
 ```
-
-![Screenshot 2024-12-07 171722](https://github.com/user-attachments/assets/08e9b84a-24bb-46da-a924-f27d2f407e50)
 
 > Soal 2: Karena Fairy adalah Al yang sangat berharga, kalian perlu memastikan bahwa tidak ada perangkat lain yang bisa melakukan ping ke Fairy. Tapi Fairy tetap dapat mengakses seluruh perangkat.
 
@@ -563,3 +561,5 @@ iptables -D OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
 ```
 
 ***
+
+![Screenshot 2024-12-07 171722](https://github.com/user-attachments/assets/08e9b84a-24bb-46da-a924-f27d2f407e50)
